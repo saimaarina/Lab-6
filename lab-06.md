@@ -68,6 +68,57 @@ decrease it for the others.
 
 ### Exercise 3
 
-…
+``` r
+fisheries <- read_csv("data/fisheries.csv")
+```
 
-Add exercise headings as needed.
+    ## Rows: 216 Columns: 4
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): country
+    ## dbl (3): capture, aquaculture, total
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+To start with, the 3D pie charts are not visually appealing and do not
+provide comparisons equally across countries. Bar charts can replace
+them to make the areas and lenghts comparable. Putting capture and
+aquaculture side by side within each country and differentated by one
+color per production type instead of per country can show comparison and
+the total. The rank pattern can be made more obvious by ordering the
+countries by either total production or capture. The visuals are also
+missing a title, axis labels, and an additional subtitle.
+
+``` r
+fisheries_long <- fisheries %>%
+  pivot_longer(cols = c(capture, aquaculture), names_to = "type", values_to = "tons")
+```
+
+``` r
+top_countries <- fisheries_long %>% 
+  group_by(country) %>% 
+  summarise(total_tons = sum(tons, na.rm = TRUE)) %>% 
+  slice_max(total_tons, n = 15) %>% 
+  arrange(desc(total_tons)) %>% 
+  pull(country)
+
+fisheries_top15 <- fisheries_long %>% 
+  filter(country %in% top_countries) %>% 
+  mutate(country = factor(country, levels = top_countries))
+
+ggplot(fisheries_top15,
+       aes(x = country,
+           y = tons,
+           fill = type)) +
+  geom_col(position = "dodge") +
+  labs(
+    title = "Capture vs Aquaculture, Top 15 Producing Countries (2016)",
+    x = "Country",
+    y = "Tons of fish (2016)"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+![](lab-06_files/figure-gfm/-%20plotting-1.png)<!-- -->
