@@ -122,3 +122,74 @@ ggplot(fisheries_top15,
 ```
 
 ![](lab-06_files/figure-gfm/-%20plotting-1.png)<!-- -->
+
+### Smokers in Whickham
+
+``` r
+data(Whickham)
+?Whickham
+```
+
+    ## starting httpd help server ... done
+
+``` r
+library(performance)
+```
+
+### Exercise 1
+
+This study is observational because there was no experimental
+manipulation done on the participants. Only observations were recorded
+(whether they smoke and their age).
+
+### Exercise 2
+
+``` r
+nrow(Whickham)
+```
+
+    ## [1] 1314
+
+There are 1,314 observations and each observation is one individual
+person from Whickham with their recorded age, smoking status at
+baseline, and survival status 20 years later.
+
+### Exercise 3
+
+``` r
+ncol(Whickham)
+```
+
+    ## [1] 3
+
+There are 3 variables: outcome (categorical), smoker (categorical), and
+age (numerical).
+
+``` r
+Whickham %>% 
+  ggplot(aes(x = smoker)) +
+  geom_bar()
+```
+
+![](lab-06_files/figure-gfm/-%20variable%20visuals-1.png)<!-- -->
+
+``` r
+Whickham %>% 
+  ggplot(aes(x = outcome)) +
+  geom_bar()
+```
+
+![](lab-06_files/figure-gfm/-%20variable%20visuals-2.png)<!-- -->
+
+``` r
+Whickham %>% 
+  ggplot(aes(x = age)) +
+  geom_histogram(binwidth = 5)
+```
+
+![](lab-06_files/figure-gfm/-%20variable%20visuals-3.png)<!-- -->
+
+### Exercise 4
+
+I would imagine there to be an association between being a smoker and
+having a higher likelihood of death.
