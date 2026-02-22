@@ -193,3 +193,44 @@ Whickham %>%
 
 I would imagine there to be an association between being a smoker and
 having a higher likelihood of death.
+
+### Exercise 5
+
+``` r
+Whickham %>%
+  count(smoker, outcome)
+```
+
+    ##   smoker outcome   n
+    ## 1     No   Alive 502
+    ## 2     No    Dead 230
+    ## 3    Yes   Alive 443
+    ## 4    Yes    Dead 139
+
+``` r
+Whickham %>%
+  ggplot(aes(x = smoker, fill = outcome)) +
+  geom_bar(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = "Health outcome by smoking status in Whickham study",
+    x = "Smoking status",
+    y = "Proportion within smoking group",
+    fill = "Outcome"
+  ) +
+  theme_minimal()
+```
+
+![](lab-06_files/figure-gfm/-%20visual%20bar%20chart-1.png)<!-- -->
+
+Conditional Probabilities
+
+Non-smokers: 502 alive, 230 dead = 732 P(Dead\|Non-smoker) = 230/732 =
+0.31 or 31% P(Alive\|Non-smoker) = 502/732 = 0.69 or 69%
+
+Smokers: 443 alive, 139 dead = 582 P(Dead\|Smoker) = 139/582 = 0.24 or
+24% P(Alive\|Smoker) = 443/582 = 0.76 or 76%
+
+This is conflicting with my initial assumption, since it’s found that
+smokers actually have a lower observed death proportion and a higher
+survival proportion than non‑smokers.
