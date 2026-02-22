@@ -170,3 +170,47 @@ P(Dead|Smoker) = 139/582 = 0.24 or 24%
 P(Alive|Smoker) = 443/582 = 0.76 or 76%
 
 This is conflicting with my initial assumption, since it's found that smokers actually have a lower observed death proportion and a higher survival proportion than non‑smokers.
+
+
+### Exercise 6
+
+```{r - binning age}
+Whickham <- Whickham %>%
+  mutate(
+    age_cat = case_when(
+      age <= 44 ~ "18-44",
+      age > 44 & age <= 64 ~ "45-64",
+      age > 64 ~ "65+"
+    )
+  )
+```
+
+
+### Exercise 7 
+
+```{r - new plot}
+Whickham %>%
+  ggplot(aes(x = smoker, fill = outcome)) +
+  geom_bar(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  facet_wrap(~ age_cat) +
+  labs(
+    title = "Health outcome by smoking status, faceted by age group",
+    x = "Smoking status",
+    y = "Proportion within smoking group",
+    fill = "Outcome"
+  ) +
+  theme_minimal()
+```
+
+```{r - contingency}
+Whickham %>%
+  count(smoker, age_cat, outcome)
+```
+
+
+What changed was that now smokers are found to have a higher proportion of death than non-smokers, and this was prominent in the older age categories, although overall smokers seemed to be healthier in the plot that was unfaceted. In the extended table, we see that younger people have more lower death rates overall and there is an age imbalance. It is after stratifying by ages that we can see the harmful association we expect between death and smoking.
+
+
+
+
